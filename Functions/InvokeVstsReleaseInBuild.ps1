@@ -27,9 +27,11 @@ Function Invoke-VstsReleaseInBuild {
         Write-Host "BUILD_TRIGGEREDBY_BUILDID environment variable is missing. This means that build has been kicked off manually. Will attempt to get last successful build, which may not be correct!"
         try {
             if ($PSBoundParameters.ContainsKey('user') -eq $true) {
+                Write-Host "here"
                 $triggeredBuildId = Get-VstsBuild -vstsAccount $vstsAccount -projectName $projectName -buildName $buildName -user $user -token $token
             }
             else {
+                Write-Host "there"
                 $triggeredBuildId = Get-VstsBuild -vstsAccount $vstsAccount -projectName $projectName -buildName $buildName
             }
         }
