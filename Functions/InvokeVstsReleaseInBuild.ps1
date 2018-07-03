@@ -62,7 +62,7 @@ Function Invoke-VstsReleaseInBuild {
             $result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Body $jsonBody -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo)}
         }
         else {
-            $result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Body $jsonBody -Headers @{Authorization = Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
+            $result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Body $jsonBody -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
         }
         $monitorUrl = $result.Url
         Write-Host $monitorUrl
