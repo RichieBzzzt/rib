@@ -70,7 +70,7 @@ Function Invoke-VstsReleaseInBuild {
             $monitor = Invoke-RestMethod -Uri $monitorUrl -Method GET -ContentType "application/json" -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo)}
         }
         else {
-            $monitor = Invoke-RestMethod -Uri $monitorUrl -Method GET -ContentType "application/json" -Headers @{Authorization = Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
+            $monitor = Invoke-RestMethod -Uri $monitorUrl -Method GET -ContentType "application/json" -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
         }
         Write-Host "Checking status of release. Please wait, this could take some time..."
         while (($monitor.environments[0].status -eq "queued") -or ($monitor.environments[0].status -eq "inProgress")) {
@@ -79,7 +79,7 @@ Function Invoke-VstsReleaseInBuild {
                 $monitor = Invoke-RestMethod -Uri $monitorUrl -Method GET -ContentType "application/json" -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo)}
             }
             else {
-                $monitor = Invoke-RestMethod -Uri $monitorUrl -Method GET -ContentType "application/json" -Headers @{Authorization = Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
+                $monitor = Invoke-RestMethod -Uri $monitorUrl -Method GET -ContentType "application/json" -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
             }
         }
         if ($($monitor.environments[0].status) -ne "succeeded") {
