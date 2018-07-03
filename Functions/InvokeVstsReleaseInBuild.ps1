@@ -59,9 +59,11 @@ Function Invoke-VstsReleaseInBuild {
     try {
         $uri = "https://$($vstsAccount).vsrm.visualstudio.com/$($projectName)/_apis/release/releases?api-version=4.1-preview.6" 
         if ($PSBoundParameters.ContainsKey('user') -eq $true) {
+            Write-Host "running this bit"
             $result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Body $jsonBody -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo)}
         }
         else {
+            Write-Host "running that bit"
             $result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Body $jsonBody -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
         }
         $monitorUrl = $result.Url
