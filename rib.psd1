@@ -13,7 +13,7 @@
     NestedModules = @()
  
     # Version number of this module.
-    ModuleVersion = '0.0.0.25'
+    ModuleVersion = '0.0.0.28'
  
     # ID used to uniquely identify this module
     GUID = 'd7d10df4-c6b2-4788-9e68-21b27e8b509e'
@@ -60,6 +60,7 @@
     # Functions to export from this module
     FunctionsToExport = @(
     'Get-VstsBuild'
+    ,'Get-VstsRelease'
     ,'Invoke-VstsReleaseInBuild'
     ,'Invoke-VstsBuild'
     )
@@ -80,5 +81,4 @@
  
     # Private data to pass to the module specified in ModuleToProcess
     PrivateData = ''
- 
 }
