@@ -22,16 +22,14 @@ Function Get-VstsBuild {
     Write-Host $uri
     try {
         if ($PSBoundParameters.ContainsKey('user') -eq $true) {
-            Write-Host "here2"
         $result = Invoke-RestMethod -Uri $uri -Method GET -ContentType "application/json" -Headers @{Authorization = ("Basic {0}" -f $base64AuthInfo)}
         }
         else{
-            Write-Host "there2"
             $result = Invoke-RestMethod -Uri $uri -Method GET -ContentType "application/json" -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
         }
         $e = $result.value | Where-Object {$_.definition.name -eq $buildName -and $_.status -eq "completed" }
         $buildToCheck = $e | Select-Object -First 1
-        return $buildToCheck.id
+        return $buildToCheck
     }
     catch {
         Throw $_    
