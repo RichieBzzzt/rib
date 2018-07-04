@@ -22,7 +22,7 @@ Function Invoke-VstsBuild {
     $uri = "https://$($vstsAccount).visualstudio.com/$($projectName)/_apis/build/builds/?api-version=4.1"
 
     $body = "{
-        ""parameters"":  ""{\""triggered.build.id\"":  \""3\""}"",
+        ""parameters"":  ""{\""triggeredbuildid\"":  \""3\""}"",
         ""definition"": {
             ""id"" : $buildId
         }

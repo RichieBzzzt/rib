@@ -23,26 +23,26 @@ Function Invoke-VstsReleaseInBuild {
     if ($PSBoundParameters.ContainsKey('user') -eq $true) {
         $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $user, $token)))
     }
-    if (-not $Env:BUILD_TRIGGEREDBY_BUILDID) {
-        Write-Host "BUILD_TRIGGEREDBY_BUILDID environment variable is missing. This means that build has been kicked off manually. Will attempt to get last successful build, which may not be correct!"
+    if (-not $Env:triggeredbuildid) {
+        Write-Host "triggeredbuildid environment variable is missing. This means that build has been kicked off manually. Will attempt to get last successful build, which may not be correct!"
         try {
             if ($PSBoundParameters.ContainsKey('user') -eq $true) {
-                Write-Host "here"
-                $triggeredBuildId = Get-VstsBuild -vstsAccount $vstsAccount -projectName $projectName -buildName $buildName -user $user -token $token
+                $buildToCheck = Get-VstsBuild -vstsAccount $vstsAccount -projectName $projectName -buildName $buildName -user $user -token $token
+                $bi = $buildToCheck.definition.id 
             }
             else {
-                Write-Host "there"
-                $triggeredBuildId = Get-VstsBuild -vstsAccount $vstsAccount -projectName $projectName -buildName $buildName
+                $buildToCheck = Get-VstsBuild -vstsAccount $vstsAccount -projectName $projectName -buildName $buildName
+                $bi = $buildToCheck.definition.id
             }
         }
         catch {
-            Throw $_   
+            Throw $_
         }
     }
     else {
-        $triggeredBuildId = $Env:BUILD_TRIGGEREDBY_BUILDID
+        $bi = $Env:triggeredbuildid
     }
-    Write-Host $triggeredBuildId
+    Write-Host $bi
     $body = @{
         "definitionId" = "$($releaseDefinitionId)"
         "description"  = "Creating automated release"
@@ -51,7 +51,7 @@ Function Invoke-VstsReleaseInBuild {
     $artifact = @{
         "alias"             = "$($buildArtifactName)"
         "instanceReference" = @{
-            "id"   = "$($triggeredBuildId)"
+            "id"   = "$($bi)"
             "name" = $null
         }
     }
@@ -97,4 +97,3 @@ Function Invoke-VstsReleaseInBuild {
         Throw $_    
     }
 }
-
