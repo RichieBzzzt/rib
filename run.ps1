@@ -17,4 +17,4 @@ $releaseName = "prm"
 # Write-Host $buildOutput
 
 $release = Get-VstsRelease -vstsAccount $accountName -projectName $proj -releaseName $releaseName -user $usr -token $tkn
-Write-Output $release | ConvertTo-Json
+Write-Output $release.releaseDefinition.id

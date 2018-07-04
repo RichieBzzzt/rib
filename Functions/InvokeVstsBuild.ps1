@@ -7,9 +7,6 @@ Function Invoke-VstsBuild {
         , [string]
         [ValidateNotNullOrEmpty()]
         $projectName
-        , [string]
-        [ValidateNotNullOrEmpty()]
-        $buildNumberVariableName
         , [int]
         [ValidateNotNullOrEmpty()]
         $buildId
@@ -36,7 +33,7 @@ Function Invoke-VstsBuild {
     $uri = "https://$($vstsAccount).visualstudio.com/$($projectName)/_apis/build/builds/?api-version=4.1"
 
     $body = "{
-        ""parameters"":  ""{\""$buildNumberVariableName\"":  \""$CurrentBuildNumber\""}"",
+        ""parameters"":  ""{\""rib\"":  \""$CurrentBuildNumber\""}"",
         ""definition"": {
             ""id"" : $buildId
         }

@@ -23,8 +23,8 @@ Function Invoke-VstsReleaseInBuild {
     if ($PSBoundParameters.ContainsKey('user') -eq $true) {
         $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $user, $token)))
     }
-    if (-not $Env:triggeredbuildid) {
-        Write-Host "triggeredbuildid environment variable is missing. This means that build has been kicked off manually. Will attempt to get last successful build, which may not be correct!"
+    if (-not $Env:rib) {
+        Write-Host "rib environment variable is missing. This means that build has been kicked off manually. Will attempt to get last successful build, which may not be correct!"
         try {
             if ($PSBoundParameters.ContainsKey('user') -eq $true) {
                 $buildToCheck = Get-VstsBuild -vstsAccount $vstsAccount -projectName $projectName -buildName $buildName -user $user -token $token
@@ -40,9 +40,8 @@ Function Invoke-VstsReleaseInBuild {
         }
     }
     else {
-        $bi = $Env:triggeredbuildid
+        $bi = $Env:rib
     }
-    Write-Host $bi
     $body = @{
         "definitionId" = "$($releaseDefinitionId)"
         "description"  = "Creating automated release"
