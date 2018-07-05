@@ -1,4 +1,4 @@
-Function Get-VstsRelease {
+Function Get-VstsReleaseByName {
     [CmdletBinding()]
     param(
         [string]
@@ -9,7 +9,7 @@ Function Get-VstsRelease {
         $projectName
         , [string]
         [ValidateNotNullOrEmpty()]
-        $releaseSelfUri
+        $releaseName
         , [string]
         $user
         , [string]
@@ -18,7 +18,7 @@ Function Get-VstsRelease {
     if ($PSBoundParameters.ContainsKey('user') -eq $true) {
     $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $user, $token))) 
     }
-    $uri = $releaseSelfUri
+    $uri = "https://$($vstsAccount).vsrm.visualstudio.com/$($projectName)/_apis/release/releases?api-version=4.1-preview.6"
     Write-Host $uri
     try {
         if ($PSBoundParameters.ContainsKey('user') -eq $true) {
@@ -27,7 +27,9 @@ Function Get-VstsRelease {
         else{
             $result = Invoke-RestMethod -Uri $uri -Method GET -ContentType "application/json" -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"}
         }
-        return $result
+        $e = $result.value | Where-Object {$_.releaseDefinition.name -eq $releaseName }
+        $releaseToCheck = $e | Select-Object -First 1
+        return $releaseToCheck
     }
     catch {
         Throw $_    

@@ -14,7 +14,7 @@ Function Invoke-VstsReleaseInBuild {
         $buildName
         , [string]
         [ValidateNotNullOrEmpty()]
-        $buildArtifactName
+        $buildArtifactAlias
         , [string]
         $user
         , [string]
@@ -48,7 +48,7 @@ Function Invoke-VstsReleaseInBuild {
     }
     $body.Add("artifacts", @())
     $artifact = @{
-        "alias"             = "$($buildArtifactName)"
+        "alias"             = "$($buildArtifactAlias)"
         "instanceReference" = @{
             "id"   = "$($bi)"
             "name" = $null
